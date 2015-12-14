@@ -1,0 +1,22 @@
+\select@language {english}
+\contentsline {part}{I\hspace {1em}Introduction}{2}
+\contentsline {section}{\numberline {1}Requirements}{2}
+\contentsline {section}{\numberline {2}Foreword}{2}
+\contentsline {part}{II\hspace {1em}Installation}{4}
+\contentsline {section}{\numberline {1}Necessary Third Parties Programs}{4}
+\contentsline {subsection}{\numberline {1.1}Install Python}{4}
+\contentsline {subsection}{\numberline {1.2}Install pip}{4}
+\contentsline {section}{\numberline {2}Install Microchip-CSS-Optimizer}{4}
+\contentsline {part}{III\hspace {1em}How to use Microchip-CSS-Optimizer}{5}
+\contentsline {section}{\numberline {1}Step1}{5}
+\contentsline {section}{\numberline {2}Step2}{5}
+\contentsline {section}{\numberline {3}StepWarning}{7}
+\contentsline {section}{\numberline {4}Step3}{8}
+\contentsline {part}{IV\hspace {1em}Known Issues}{8}
+\contentsline {section}{\numberline {1}Bootstrap}{8}
+\contentsline {part}{V\hspace {1em}Extra}{8}
+\contentsline {section}{\numberline {1}Create a Shortcut}{8}
+\contentsline {subsection}{\numberline {1.1}Mac}{8}
+\contentsline {subsection}{\numberline {1.2}Windows}{9}
+\contentsline {section}{\numberline {2}Add commands to windows command prompt}{9}
+\contentsline {section}{\numberline {3}Move into file system with command prompt}{9}

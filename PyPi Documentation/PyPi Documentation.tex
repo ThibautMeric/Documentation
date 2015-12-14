@@ -1,0 +1,237 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tocloft}
+\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{geometry}
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+\title{\vspace{\fill}PyPi Documentation}
+\author{Thibaut Meric}
+\date{12.03.2015\vspace{\fill}}
+\begin{document}
+\maketitle
+\newpage
+\renewcommand*\contentsname{\Huge Table of Contents}
+\tableofcontents
+\newpage
+\part {Introduction}
+\section {Purpose of this document}
+This documentation is meant to help its readers releasing a Python program thru PyPi. Once a Python project is over, handling its release to a large scale, and ensure a version control can be a problem. Using PyPi solve those two issues.
+\section {What is PyPi}
+PyPi can be considered as an application store for Python programs.
+\begin{itemize}
+\item As a user, in commandline, you can download programs directly from PyPi,  using pip command.\\
+Just type in command prompt:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip MyPackage
+\end{mdframed}
+And if MyPackage is on PyPi, it will be installed.
+\item As a developer, you can push any python program you want, with no restrictions and no control -as soon as the name of your package is not already used obviously-.
+\end{itemize}
+\part {Installation}
+\setcounter{section}{0}
+\section {Install Python}
+The first step consist in verifying if Python is correctly installed on your computer.\\
+\begin{itshape}
+\\Note: By default Python should be installed on MacOs.\\
+\end{itshape}
+\\In the command prompt, to check if Python is installed, type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+Python -V \hfill(For Mac \& Linux)\\
+py \hfill(For Windows)
+\end{mdframed}
+If this command returns an error, you need to install Python. Go to https://www.python.org/downloads/ and install Python 3.xx.
+\section {Install pip}
+\begin{itshape}
+Note: At this point, for Windows users, you need to link your command prompt with the new installed scripts, if you don't know how to do that, go to chapter 4.1.
+\end{itshape}
+\medbreak
+Theoretically, pip comes with Python 3.4 or higher. To Check if pip is installed, type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip
+\end{mdframed} 
+If this command returns an error you need to install pip. Go to https://bootstrap.pypa.io and download "get-pip.py".\\
+Once downloaded, double click on the file. Pip should be installed automatically.
+\begin{itshape}
+ \medbreak
+Note: For Mac users, you may need to run this file thru your command prompt. Just place the command prompt in the same folder than your file and type:\\ 
+python get-pip.py.\\
+If you don't know how to move into the file system in commandline, go to chapter 4.2
+\end{itshape}
+\section {Install wheel}
+Know, pip should be installed on your computer. PyPi supports several installation packages types, but the most commons are .egg files and .whl files. whl files tends to become the new standard, and is recommended by PyPi, so we are only going to talk about .whl.\\
+To create new .whl files, wheel package has to be installed. Just type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip list 
+\end{mdframed} 
+to check if wheel is installed. If not, install it using pip:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip install wheel
+\end{mdframed}
+\begin{itshape}
+Note: Wheel doesn't have to be installed on the user side to unpack your .whl file
+\end{itshape}
+\section {Install twine}
+Twine is a package made to interact with PyPi. It's not the only available utility to talk with PyPi, but this one use HTTPS protocol. Just type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip list 
+\end{mdframed} 
+to check if twine is installed. If not, install it using pip:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip install twine pyopenssl ndg-httpsclient pyasn1
+\end{mdframed}
+\newpage
+\part {Working with PyPi}
+\setcounter{section}{0}
+\section {Create a .whl file}
+\subsection {Create a setup.py file}
+To create a whl file, wheel needs a setup file named "setup.py". This file has to be placed at the top level of your project. This setup file will be used to reference the files you want to appear in your project, the name of your whl file, and general information around your project.\\
+\\Here is asetup.py example:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+from setuptools import setup, find\_packages\\
+import MainFolder\\
+   \\\indent setup(\\
+     \indent\indent name = 'MyProjectName',\\
+     \indent\indent version = MainFolder.\_\_version\_\_,\\
+     \indent\indent packages = find\_packages(),\\
+     \indent\indent entry\_points = {'gui\_scripts': ['CalledNameInCommandPrompt = MainFolder.MyMainFile:main',]},\\
+      \indent\indent description='example',\\
+      \indent\indent long\_description='This is a long description for an example',\\
+      \indent\indent author='Me',\\
+      \indent\indent author\_email='me@microchip.com',\\
+      \indent\indent url='www.xample.com',\\
+      \indent\indent maintainer= 'Not Me',\\
+      \indent\indent maintainer\_email='not.me@microchip.com',\\
+      \indent\indent classifiers=['Development Status :: 5 - Production/Stable',\\
+                   \indent\indent\indent 'Intended Audience :: Developers'\\
+                   \indent\indent\indent  'License :: OSI Approved :: MIT License',\\
+                    \indent\indent\indent 'Natural Language :: English',\\
+                    \indent\indent\indent  'Programming Language :: Python :: 2.3',\\
+                    \indent\indent\indent 'Programming Language :: Python :: 3',\\
+                    \indent\indent\indent ],\\
+       \indent\indent platforms=['Operating System :: MacOS :: MacOS X','Operating System :: Microsoft :: Windows'],\\
+       \indent\indent keywords='Example',\\
+      \indent)
+\end{mdframed}
+The setup file will scan the directories entered in the 'packages" attribute, and add them to the whl file.\\
+\begin{bfseries}
+\\\color{red}Caution: In each folder of the project, an empty  \_\_init\_\_.py file must be present. Or the setup scan will not include the entire folder and subdirectories to the whl file.\\
+\end{bfseries}
+\begin{itshape}
+\\Note: All documentation about setup() attributes can be found here:\\ https://packaging.python.org/en/latest/distributing/\#setup-args\\
+\\Note: All classifiers attributes can be found here:\\
+https://pypi.python.org/pypi?\%3Aaction=list\_classifiers\\
+\end{itshape}
+All those attributes will be used by PyPi to reference your project and name the .whl file.\\
+The name of your whl file is really important. It contains information that, for example will determine if you can install the package or not, depending on the version of python you have.\\
+\begin{itshape}
+\\All documentation around wheel file name can be found here:\\
+https://www.python.org/dev/peps/pep-0427/\\
+\end{itshape}
+\\PyPi is also really strict on version number. The version number is always inserted in the name of the whl file, and it is not possible to submit two times with the same version number.
+\subsection {Create a universal .whl file}
+By default, your program can only work either on Python 2 or Python 3, but not on both at the same time. If you want your wheel to work on both environments, building a "universal" wheel is needed.\\
+\\To do so, create a file called "setup.cfg" is the same directory than "setup.py"
+and type in the file:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+[bdist\_wheel]\\
+universal = 1
+\end{mdframed}
+Save and close\\
+Now, once we will generate our .whl file, our wheel will be a universal wheel, working either on Python 2 and Python 3.\\
+\begin{itshape}
+\\Note: More information about wheel type can be found here:\\
+http://python-packaging-user-guide.readthedocs.org/en/latest/distributing/\#wheels
+\end{itshape}
+\subsection {Create a .whl file}
+Once the setup.py file created, we can create our .whl file.\\
+\\To test the setup.py file, go with your command prompt into the setup file directory, and type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+python setup.py test
+\end{mdframed}
+\begin{itshape}
+ \medbreak
+Note: If you don't know how to move into the file system in commandline, go to chapter 4.2\\
+\end{itshape}
+\\If it returns no error, we can go to the next step.
+To create a whl file type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+python setup.py bdist\_wheel
+\end{mdframed}
+And the whl file be generated in a folder named dist.\\
+\subsection {Locally test your .whl file}
+To test the new whl file, go into dist directory with your command prompt, and type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip install MyProjectName-1.0-py2-none-any.whl
+\end{mdframed}
+Once installed run the program typing in comand prompt the entry\_points name you set up in script.py. In our previous example this name was: "CalledNameInCommandPrompt".\\
+\\If you want to delete this new installation just type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip uninstall MyProjectName
+\end{mdframed}
+\section {Submit your .whl to PyPi}
+To submit your program to PyPi, the only requirement is to have a free account on PyPi. It is recommended to create an account directly on their website, but you can also do it in commandline.\\
+\begin{itshape}
+\\Note: PyPi also has a test website to test your program before doing an official release. Its adress is https://testpypi.python.org/pypi. To use it, you have to create a separate account from the main PyPi website.\\
+\end{itshape}
+We need to submit two elements to make a clean release.\\
+First, we need to submit the script.py file, that will contain all the information about our whl file.\\
+\\To do so, go into the  setup.py directory and type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+python setup.py register
+\end{mdframed}
+If you don't have an account, you can create one at this step, but it's not recommended.\\
+Once done, we can know submit our whl file.\\
+\\To do so, just type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+twine upload dist/MyProjectName-1.0-py2-none-any.whl
+\end{mdframed}
+Your Program is now available for everyone. If you want to work around your new release, just go on https://pypi.python.org, log on and edit your release.
+\section {Download your .whl from PyPi}
+if you want to download and install your whl file, just type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pip install MyProjectName
+\end{mdframed}
+\setcounter{section}{0}
+\newpage
+\part {Extra}
+\section {Add commands to windows command prompt}
+Window command prompt works with environment variables. Those environment variables are stored in .exe files placed anywhere on the computer. Windows will store the paths of those .exe files in a file to get acess to them. Once you type a command, the command prompt will try each .exe file until it find yours. Pip on windows is a .exe file stored in the Script folder in Python installation diretory. To tell windows this .exe file has to be added to the environment variable, we need to edit the path file.
+To do so, type in windows command prompt:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+setx PATH "\%PATH\%;C:\textbackslash Path\textbackslash To\textbackslash Python\textbackslash Install\textbackslash Scripts"
+\end{mdframed}
+Where:
+\begin{itemize}
+\item PATH is the file where the paths are stored
+\item \%PATH\% represent all the old reference that we keep
+\item ; a spacer between old and new path
+\item C:\textbackslash Path\textbackslash To\textbackslash Python\textbackslash Install\textbackslash Scripts is the path of your script folder in the Python directory. You shall only edit this part of the commandline and put your path. If you didn't change anything in Python installation paths, this path should be: C:\textbackslash PythonXX\textbackslash Scripts
+\end{itemize}
+\begin{itshape}
+Note: After this, you need to restart the command prompt, to apply changes.
+\end{itshape}
+\newpage
+\section {Move into file system with command prompt}
+When you type a command in the command prompt, this command is always executed from a directory. That means that when you want to use commands dealing with files, the path to these files will have to be from the current directory to the file, and NOT the absolute path of these files.\\
+If you want to know in which directory your command prompt is, type:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+pwd \hfill(For Mac and Linux)\\
+echo \%cd\% \hfill(For Windows)
+\end{mdframed}
+If you want to change the current directory, use:
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+cd .. \hfill(To go to the parent folder)\\
+cd MyFolder \hfill(To go inside MyFolder)
+\end{mdframed}
+If you want to know what folders and files are in your curent directory just type:\\
+\begin{mdframed}[backgroundcolor=black, fontcolor=white]
+ls\hfill(For Mac \& Linux)\\
+dir \hfill(For Windows)
+\end{mdframed}
+\end{document}
